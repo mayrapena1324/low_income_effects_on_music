@@ -1,2 +1,43 @@
-# created by virtualenv automatically
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Virtual environments
+venv/
+env/
+*.venv/
+.venv/
+ENV/
+.ENV/
+env.bak/
+env1/
+venv.bak/
+ve/
+.ve/
+venv1/
+
+# PyCharm project files
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Log files
 *.log
+*.log.*
+logging.log
+
+# Compiled Python files
+*.pyc
+*.pyo
+*.pyd
+
+# Editor-specific backup files
+*~
+
