@@ -97,7 +97,7 @@ options.add_experimental_option("prefs", {
 
 driver = webdriver.Chrome(options=options)
 
-years = ["2017", "2018", "2019", "2021", "2022", "2023"]  # Skipped 2020 because COVID Canceled the contest
+years = ["2018", "2019", "2021", "2022", "2023"]  # Skipped 2020 because COVID Canceled the contest
 regions = [f"Region {x}" for x in range(1, 34)]  # Add all the available regions here
 regions.append("Region 76")  # Edge case
 event = "Band"  # This option includes all other data. Story about Why Orchestra Option does not work for all Regions
