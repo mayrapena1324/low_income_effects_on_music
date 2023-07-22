@@ -1,9 +1,8 @@
 import time
-import camelot
-import pandas as pd
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+
 
 DOWNLOAD_DICTIONARY = "/Users/mayrapena/PycharmProjects/low_income_effects_on_music/all_state_data/all_state_pdfs"
 URL = "https://www.uiltexas.org/music/archives"
@@ -39,23 +38,7 @@ def download_outstanding_performer():
             # Skip if file not available
             print(f" No {year} Outstanding Performer file available.")
             pass
+    driver.quit()
 
 
 download_outstanding_performer()
-
-###### Convert pdf to csv ##############
-
-# Load the PDF and extract tables
-pdf_file = "all_state_data/all_state_pdfs/2018_TSSEC_Outstanding_Performer.pdf"
-tables = camelot.read_pdf(pdf_file, flavor='stream', pages='all')
-
-# Concat multiple tables from different pages.
-df = pd.concat([table.df for table in tables])
-
-# Save the extracted data as a CSV file
-output_file = "all_state_data/all_state_csvs/2017_Outstanding_Performer.csv"
-df.to_csv(output_file, index=False)
-
-print(f"CSV file '{output_file}' has been saved in your project directory.")
-
-
