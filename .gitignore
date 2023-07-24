@@ -40,3 +40,6 @@ logging.log
 
 # Editor-specific backup files
 *~
+
+all_state_data/
+uil_data/
