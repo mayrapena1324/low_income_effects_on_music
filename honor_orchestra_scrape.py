@@ -1,44 +1,37 @@
 import os
-
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
-# URL of the website to scrape
-base_url = 'https://www.tmea.org/orchestra/honor-orchestra/history/?skip=0&Year_Class=*&Director=&School_Name_op=bw' \
+base_url = 'https://www.tmea.org/orchestra/honor-orchestra/history/?skip={}&Year_Class=*&Director=&School_Name_op=bw' \
            '&School_Name=&ISD_op=bw&ISD=&submit=Search'
 directory = "honor_orchestra_data/"
-
 total_pages = 4
 
 data_list = []
 
 # Loop through each page
-for page_num in range(1, total_pages + 1):
-    # Send an HTTP GET request to the current page
-    url = base_url.format(page_num)
+for page_skip in range(0, total_pages):
+    url = base_url.format(page_skip * 300)  # Page skip is 300
     response = requests.get(url)
 
     if response.status_code == 200:
-        # Parse the HTML content using BeautifulSoup
         soup = BeautifulSoup(response.content, 'html.parser')
 
-        # Find the HTML elements containing the data you want to scrape (same as before)
         table = soup.find('table')
         data_rows = []
         for row in table.find_all('tr'):
             row_data = []
             for cell in row.find_all('td'):
-                row_data.append(cell.text.strip())  # Adjust this based on your specific data
+                row_data.append(cell.text.strip())
             if row_data:
                 data_rows.append(row_data)
 
-        # Append data from this page to the list
         data_list.extend(data_rows)
 
-        print(f"Data from page {page_num} has been scraped.")
+        print(f"Data from page {page_skip + 1} has been scraped.")
     else:
-        print(f"Failed to retrieve data from page {page_num}.")
+        print(f"Failed to retrieve data from page {page_skip + 1}.")
 
 try:
     # Create the directory if it doesn't exist
@@ -52,6 +45,5 @@ try:
     print(f"CSV file has been saved in directory '{directory}'.")
 except OSError:
     print(f"Error: Failed to save the CSV file in directory '{directory}'.")
-
 
 print("Data from all pages has been successfully scraped and saved.")
