@@ -45,3 +45,5 @@ all_state_data/
 uil_data/
 honor_data/
 school_data/
+
+explore.py
