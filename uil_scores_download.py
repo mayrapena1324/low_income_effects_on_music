@@ -1,7 +1,7 @@
 import os
 import time
 import csv
-import pyautogui
+import chardet
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
@@ -68,8 +68,15 @@ def create_combined_csv():
 
 # Function to append the contents of incoming CSV files
 def append_csv_to_new_file(new_csv_file, file_path):
-    with open(new_csv_file, mode='a', newline='') as new_file:
-        with open(file_path, mode='r', newline='') as incoming_file:
+    # Detect the encoding of the incoming CSV file
+    with open(file_path, mode='rb') as incoming_file:
+        raw_data = incoming_file.read()
+        result = chardet.detect(raw_data)
+        incoming_encoding = result['encoding']
+
+    # Convert the incoming CSV file to 'utf-8' encoding if it's different
+    with open(file_path, mode='r', newline='', encoding=incoming_encoding) as incoming_file:
+        with open(new_csv_file, mode='a', newline='', encoding='utf-8') as new_file:
             reader = csv.reader(incoming_file)
             writer = csv.writer(new_file)
 
@@ -80,9 +87,6 @@ def append_csv_to_new_file(new_csv_file, file_path):
             # Append the rest of the rows to the new CSV file
             writer.writerows(reader)
 
-
-# This will move the mouse every 60 seconds to prevent sleep
-pyautogui.FAILSAFE = False
 
 DOWNLOAD_DICTIONARY = "/Users/mayrapena/PycharmProjects/low_income_effects_on_music/uil_data"
 URL = "https://www.texasmusicforms.com/csrrptuilpublic.asp"
@@ -113,9 +117,6 @@ for year in years:
 
             append_csv_to_new_file(new_csv_file='uil_data/combined_uil_scores.csv', file_path=downloaded_file)
             rename_csv(current_year=year, current_region=region)
-
-            # Move the mouse every 60 seconds to prevent sleep
-            pyautogui.move(1, 1)
 
         except NoSuchElementException:
             print(f"{region} skipped.")
