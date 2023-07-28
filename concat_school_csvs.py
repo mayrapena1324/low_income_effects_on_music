@@ -3,24 +3,21 @@ import csv
 import pandas as pd
 
 csv_directory = "school_data/"
+output_file = 'combined/combined_data.csv'
 
-csv_files = os.listdir(csv_directory)
-
+# Create a list to store the combined data
 combined_data = []
 
 # Loop through each CSV file and process it
-for csv_file in csv_files:
+for csv_file in os.listdir(csv_directory):
     if csv_file.endswith(".csv"):
         # Read the CSV file and skip the first 6 rows
         file_path = os.path.join(csv_directory, csv_file)
         with open(file_path, 'r', newline='', encoding='utf-8') as file:
             csv_reader = csv.reader(file)
-            for _ in range(7):
-                next(csv_reader)  # Skip the first 7 rows
-            # Read the remaining rows
             rows = list(csv_reader)
-            # Skip the last 7 rows
-            rows = rows[:-7]
+            # Skip the first 7 and last 7 rows
+            rows = rows[7:-7]
 
             school_year = csv_file.split(".csv")[0][0:9]
             for row in rows:
@@ -37,16 +34,17 @@ header_row = [
 combined_data.insert(0, header_row)
 
 # Save the combined data to a new CSV file
-output_file = 'combined/combined_data.csv'
 with open(os.path.join(csv_directory, output_file), 'w', newline='', encoding='utf-8') as file:
     csv_writer = csv.writer(file)
     csv_writer.writerows(combined_data)
 
-# Pandas to read the combined CSV file and move the 'school_year' column to the front
+# Use pandas to read the combined CSV file and move the 'school_year' column to the front
 df = pd.read_csv(os.path.join(csv_directory, output_file))
-cols = list(df.columns)
-cols.remove('school_year')
-df = df[['school_year'] + cols]
+
+# Move the 'school_year' column to the front
+school_year_col = df['school_year']
+df.drop(columns=['school_year'], inplace=True)
+df.insert(0, 'school_year', school_year_col)
 
 df.to_csv(os.path.join(csv_directory, output_file), index=False)
 
