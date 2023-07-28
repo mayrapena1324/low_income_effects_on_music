@@ -1,7 +1,6 @@
 import os
 import time
 import csv
-import pyautogui
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
@@ -81,9 +80,6 @@ def append_csv_to_new_file(new_csv_file, file_path):
             writer.writerows(reader)
 
 
-# This will move the mouse every 60 seconds to prevent sleep
-pyautogui.FAILSAFE = False
-
 DOWNLOAD_DICTIONARY = "/Users/mayrapena/PycharmProjects/low_income_effects_on_music/uil_data"
 URL = "https://www.texasmusicforms.com/csrrptuilpublic.asp"
 
@@ -113,9 +109,6 @@ for year in years:
 
             append_csv_to_new_file(new_csv_file='uil_data/combined_uil_scores.csv', file_path=downloaded_file)
             rename_csv(current_year=year, current_region=region)
-
-            # Move the mouse every 60 seconds to prevent sleep
-            pyautogui.move(1, 1)
 
         except NoSuchElementException:
             print(f"{region} skipped.")
