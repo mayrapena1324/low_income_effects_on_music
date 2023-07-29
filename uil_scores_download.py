@@ -1,7 +1,6 @@
 import os
 import time
 import csv
-import chardet
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
@@ -9,7 +8,7 @@ from selenium.common.exceptions import NoSuchElementException
 
 
 def download_csv():
-    # Function to download the CSV
+    """Downloads and returns the csv. Throws an error if the csv takes too long."""
     driver.find_element(By.CSS_SELECTOR, '#export-csv').click()
     # Wait for the file to finish downloading
     timeout = 30
@@ -23,7 +22,7 @@ def download_csv():
 
 
 def rename_csv(current_year, current_region):
-    # Rename the file
+    """Rename the csv with the current year and region"""
     new_file_name = f"{current_year}_{current_region.replace(' ', '')}_uil_results.csv"
     renamed_file = os.path.join(DOWNLOAD_DICTIONARY, new_file_name)
     os.rename(downloaded_file, renamed_file)
@@ -31,8 +30,8 @@ def rename_csv(current_year, current_region):
     print(f"File '{new_file_name}' downloaded and renamed.")
 
 
-# Function to select options in the form
 def select_form_options(year, region, event):
+    """Fills out the UIL form with the year, region, and event."""
     year_select = Select(driver.find_element(By.CSS_SELECTOR, 'select[name="yr"]'))
     region_select = Select(driver.find_element(By.CSS_SELECTOR, 'select[name="reg"]'))
     event_select = Select(driver.find_element(By.CSS_SELECTOR, 'select[name="ev"]'))
@@ -49,24 +48,23 @@ def select_form_options(year, region, event):
 
 
 def create_combined_csv():
-    # Create an empty new CSV file and write the header row
-    new_csv_file = os.path.join(DOWNLOAD_DICTIONARY, "uil_data/combined_uil_scores.csv")
+    """Creates the new csv and inserts the header """
+    new_csv_file = os.path.join(DOWNLOAD_DICTIONARY, "uil_data/combined/combined_uil_scores.csv")
     with open(new_csv_file, mode='w', newline='') as new_file:
         writer = csv.writer(new_file)
-        writer.writerow(['Contest Date', 'Event', 'Region', 'School', 'TEA Code', 'City',
-                         'Director', 'Additional Director', 'Accompanist', 'Conference',
-                         'Classification', 'Non-Varsity Group', 'Entry Number', 'Title 1',
-                         'Composer 1', 'Title 2', 'Composer 2', 'Title 3', 'Composer 3',
-                         'Concert Judge', 'Concert Judge.1', 'Concert Judge.2',
-                         'Concert Score 1', 'Concert Score 2', 'Concert Score 3',
-                         'Concert Final Score', 'Sight Reading Judge', 'Sight Reading Judge.1',
-                         'Sight Reading Judge.2', 'Sight Reading Score 1',
-                         'Sight Reading Score 2', 'Sight Reading Score 3',
-                         'Sight Reading Final Score',
-                         'Award'])
+        writer.writerow(['contest_date', 'event', 'region', 'school', 'tea_code', 'city',
+                         'director', 'additional_director', 'accompanist', 'conference',
+                         'classification', 'non_varsity_group', 'entry_number', 'title_one',
+                         'composer_one', 'title_two', 'composer_two', 'title_three', 'composer_three',
+                         'concert_judge', 'concert_judge_1', 'concert_judge_2',
+                         'concert_score_1', 'concert_score_two', 'concert_score_three',
+                         'concert_final_score', 'sight_reading_judge', 'sight_reading_judge_one',
+                         'sight_reading_judge_two', 'sight_reading_score_one',
+                         'sight_reading_score_two', 'sight_reading_score_three',
+                         'sight_reading_final_score', 'award'])
+    return new_csv_file
 
 
-# Function to append the contents of incoming CSV files
 def append_csv_to_new_file(new_csv_file, file_path):
     # Detect the encoding of the incoming CSV file
     with open(file_path, mode='rb') as incoming_file:
@@ -80,7 +78,7 @@ def append_csv_to_new_file(new_csv_file, file_path):
             reader = csv.reader(incoming_file)
             writer = csv.writer(new_file)
 
-            # Skip the first 2 rows in the incoming CSV file (if required)
+            # Skip the first 3 rows in the incoming CSV file
             for _ in range(3):
                 next(reader)
 
@@ -106,6 +104,7 @@ regions = [f"Region {x}" for x in range(1, 34)]  # Add all the available regions
 regions.append("Region 76")  # Edge case
 event = "Band"  # This option includes all other data. Story about Why Orchestra Option does not work for all Regions
 
+combined_csv_file = create_combined_csv()
 
 for year in years:
     for region in regions:
@@ -115,13 +114,12 @@ for year in years:
             downloaded_file = download_csv()
             time.sleep(10)  # Respecting Site
 
-            append_csv_to_new_file(new_csv_file='uil_data/combined_uil_scores.csv', file_path=downloaded_file)
+            append_csv_to_new_file(combined_csv_file, downloaded_file)
             rename_csv(current_year=year, current_region=region)
 
         except NoSuchElementException:
             print(f"{region} skipped.")
             pass
 
-
-print("All CSV files downloaded and appended into 'new_file.csv'.")
-driver.quit()
+    print("All CSV files downloaded and appended into 'combined_uil_scores.csv'.")
+    driver.quit()

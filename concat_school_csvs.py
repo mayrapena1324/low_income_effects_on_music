@@ -88,4 +88,4 @@ df.to_csv(os.path.join(csv_directory, output_file), index=False)
 
 print(f"Combined data has been saved to {output_file}.")
 
-assert_no_data_loss(csv_directory)
+assert_no_data_loss(csv_directory) 
