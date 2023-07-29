@@ -65,14 +65,13 @@ def create_combined_csv():
     return new_csv_file
 
 
-# Function to append the contents of incoming CSV files
 def append_csv_to_new_file(new_csv_file, file_path):
     with open(new_csv_file, mode='a', newline='') as new_file:
         with open(file_path, mode='r', newline='') as incoming_file:
             reader = csv.reader(incoming_file)
             writer = csv.writer(new_file)
 
-            # Skip the first 2 rows in the incoming CSV file (if required)
+            # Skip the first 3 rows in the incoming CSV file
             for _ in range(3):
                 next(reader)
 
