@@ -32,10 +32,14 @@ click==8.1.6
     #   pip-tools
 cryptography==41.0.2
     # via pdfminer-six
+duckdb==0.8.1
+    # via -r requirements.in
 et-xmlfile==1.1.0
     # via openpyxl
 exceptiongroup==1.1.2
     # via trio-websocket
+greenlet==2.0.2
+    # via sqlalchemy
 h11==0.14.0
     # via wsproto
 idna==3.4
@@ -69,6 +73,8 @@ pillow==10.0.0
     # via pdfplumber
 pip-tools==7.1.0
     # via -r requirements.in
+polars==0.18.11
+    # via -r requirements.in
 pycparser==2.21
     # via cffi
 pypdf==3.13.0
@@ -95,6 +101,8 @@ sortedcontainers==2.4.0
     # via trio
 soupsieve==2.4.1
     # via beautifulsoup4
+sqlalchemy==2.0.19
+    # via -r requirements.in
 tabulate==0.9.0
     # via camelot-py
 trio==0.22.2
@@ -103,6 +111,8 @@ trio==0.22.2
     #   trio-websocket
 trio-websocket==0.10.3
     # via selenium
+typing-extensions==4.7.1
+    # via sqlalchemy
 tzdata==2023.3
     # via pandas
 urllib3[socks]==2.0.4
