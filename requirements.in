@@ -6,3 +6,6 @@ pdfplumber
 beautifulsoup4
 pip-tools
 requests
+duckdb
+polars
+SQLAlchemy
