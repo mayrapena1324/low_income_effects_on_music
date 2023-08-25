@@ -1,5 +1,5 @@
 import pandas as pd
-import duckdb
+
 
 xls = pd.ExcelFile('school_data/title_campus_data.xlsx')
 df_2016 = pd.read_excel(xls, sheet_name=0, dtype=str)
@@ -33,41 +33,3 @@ df_2022.to_csv('school_data/combined/combined_title_campus_data.csv', mode='a', 
 
 # FINAL DF
 combined_df = pd.read_csv('school_data/combined/combined_title_campus_data.csv')
-
-
-
-
-
-
-
-
-# Initialize DuckDB connection
-con = duckdb.connect('db.duckdb')
-
-# # Register the DataFrame as a DuckDB table
-# con.register('combined_title_data', combined_df)
-#
-# # Query the table using SQL
-# result = con.execute("SELECT * FROM combined_df LIMIT 5;").fetchall()
-# print(result)
-
-con.sql('CREATE TABLE integers(i INTEGER)')
-con.sql('INSERT INTO integers VALUES (42)')
-con.sql('SELECT * FROM integers').show()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-##### ISSUES FIXED ###
-# THE ISSUE WAS THAT THE OLDER DATA WAS MISSING THE REGION COL!!
-# fixed percentages

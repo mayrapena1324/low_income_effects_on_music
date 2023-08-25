@@ -2,7 +2,7 @@ import os
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-
+import duckdb
 
 def extract_class_from_year(year_str):
     year_parts = year_str.split()
@@ -80,3 +80,25 @@ scrape_honor_data(base_url=orchestra_url,
                   num_pages=orchestra_pages,
                   save_directory=directory,
                   file_name='honor_orchestra')
+
+#### LOAD TO DUCKDB ####
+
+create_orch_table = """CREATE OR REPLACE TABLE honor_orchestra_history(year VARCHAR,class VARCHAR,rank VARCHAR, director VARCHAR, school VARCHAR, school_district VARCHAR);
+COPY honor_orchestra_history FROM 'honor_data/honor_orchestra_history.csv' ( DELIMITER ',', HEADER );
+"""
+
+create_band_table = """CREATE OR REPLACE TABLE honor_band_history(year VARCHAR,class VARCHAR,rank VARCHAR, director VARCHAR, school VARCHAR, school_district VARCHAR);
+COPY honor_band_history FROM 'honor_data/honor_band_history.csv' ( DELIMITER ',', HEADER );
+"""
+testing_table = """SELECT * FROM honor_band_history LIMIT 5;"""
+
+
+
+# Initialize DuckDB connection
+con = duckdb.connect('db.duckdb')  # I should rename this 😅
+
+# Create tables
+con.sql(create_orch_table)
+con.sql(create_band_table)
+#Select eveything from table
+con.sql(testing_table).show()
