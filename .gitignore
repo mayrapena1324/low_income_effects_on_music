@@ -49,3 +49,4 @@ school_data/
 explore.py
 
 .vscode/
+db.duckdb
