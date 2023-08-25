@@ -3,7 +3,7 @@ import csv
 
 
 def create_combined_csv(new_csv_file):
-    # Create an empty new CSV file and write the header row
+    # Create an empty new CSV file and fix headers
     with open(new_csv_file, mode='w', newline='', encoding='utf-8') as new_file:
         writer = csv.writer(new_file)
         writer.writerow(['contest_date', 'event', 'region', 'school', 'tea_code', 'city',
@@ -33,11 +33,12 @@ def append_csv_to_new_file(new_csv_file, file_path):
 
 
 UIL_DIRECTORY = "/Users/mayrapena/PycharmProjects/low_income_effects_on_music/uil_data"
-COMBINED_DIRECTORY = os.path.join(UIL_DIRECTORY, "combined")  # Subdirectory for combined CSV files
-os.makedirs(COMBINED_DIRECTORY, exist_ok=True)  # Ensure the "combined" directory exists
+CSV_DIRECTORY = os.path.join(os.getcwd(), "csvs")  
+os.makedirs(CSV_DIRECTORY, exist_ok=True) 
+
 
 # Specify the new combined CSV file
-combined_csv_file = os.path.join(COMBINED_DIRECTORY, "combined_uil_scores1.csv")
+combined_csv_file = os.path.join(CSV_DIRECTORY, "combined_uil_scores.csv")
 
 # Create the combined CSV file with the header
 create_combined_csv(combined_csv_file)
