@@ -1,6 +1,7 @@
+## IS THIS SCRIPT NOT NEEDED?
 import os
 import csv
-
+import chardet
 
 def create_combined_csv(new_csv_file):
     # Create an empty new CSV file and fix headers
@@ -18,13 +19,33 @@ def create_combined_csv(new_csv_file):
                          'sight_reading_final_score', 'award'])
 
 
+# def append_csv_to_new_file(new_csv_file, file_path):
+#     with open(new_csv_file, mode='a', newline='', encoding='utf-8') as new_file:
+#         with open(file_path, mode='r', newline='', encoding='utf-8', errors='replace') as incoming_file:
+#             reader = csv.reader(incoming_file)
+#             writer = csv.writer(new_file)
+
+#             # Skip the first three rows in the incoming CSV file
+#             for _ in range(3):
+#                 next(reader)
+
+#             # Append the rest of the rows to the new CSV file
+            # writer.writerows(reader)
+
 def append_csv_to_new_file(new_csv_file, file_path):
-    with open(new_csv_file, mode='a', newline='', encoding='utf-8') as new_file:
-        with open(file_path, mode='r', newline='', encoding='utf-8', errors='replace') as incoming_file:
+    # Detect the encoding of the incoming CSV file
+    with open(file_path, mode='rb') as incoming_file:
+        raw_data = incoming_file.read()
+        result = chardet.detect(raw_data)
+        incoming_encoding = result['encoding']
+
+    # Convert the incoming CSV file to 'utf-8' encoding if it's different
+    with open(file_path, mode='r', newline='', encoding=incoming_encoding) as incoming_file:
+        with open(new_csv_file, mode='a', newline='', encoding='utf-8') as new_file:
             reader = csv.reader(incoming_file)
             writer = csv.writer(new_file)
 
-            # Skip the first three rows in the incoming CSV file
+            # Skip the first 3 rows in the incoming CSV file
             for _ in range(3):
                 next(reader)
 
@@ -50,3 +71,25 @@ for uil_file in uil_files:
     if uil_file.endswith('.csv'):
         full_csv_path = os.path.join(UIL_DIRECTORY, uil_file)
         append_csv_to_new_file(combined_csv_file, full_csv_path)
+
+
+
+# ### HERE CHANGE TO CSV?
+# def create_combined_csv():
+#     """Creates the new csv and inserts the header """
+#     new_csv_file = os.path.join(DOWNLOAD_DICTIONARY, "uil_data/combined/combined_uil_scores.csv")
+#     with open(new_csv_file, mode='w', newline='') as new_file:
+#         writer = csv.writer(new_file)
+#         writer.writerow(['contest_date', 'event', 'region', 'school', 'tea_code', 'city',
+#                          'director', 'additional_director', 'accompanist', 'conference',
+#                          'classification', 'non_varsity_group', 'entry_number', 'title_one',
+#                          'composer_one', 'title_two', 'composer_two', 'title_three', 'composer_three',
+#                          'concert_judge', 'concert_judge_1', 'concert_judge_2',
+#                          'concert_score_1', 'concert_score_two', 'concert_score_three',
+#                          'concert_final_score', 'sight_reading_judge', 'sight_reading_judge_one',
+#                          'sight_reading_judge_two', 'sight_reading_score_one',
+#                          'sight_reading_score_two', 'sight_reading_score_three',
+#                          'sight_reading_final_score', 'award'])
+#     return new_csv_file
+
+

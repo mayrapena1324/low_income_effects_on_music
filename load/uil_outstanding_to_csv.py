@@ -12,13 +12,13 @@ def remove_soft_hyphens(text):
         return ""
 
 
-output_directory = "all_state_data/all_state_csvs/combined"
+OUTPUT_DIRECTORY = "csvs/"
 pdf_directory = "all_state_data/all_state_pdfs/"
 pdf_files = os.listdir(pdf_directory)
 
 # Create the output directory if it doesn't exist
-if not os.path.exists(output_directory):
-    os.makedirs(output_directory)
+if not os.path.exists(OUTPUT_DIRECTORY):
+    os.makedirs(OUTPUT_DIRECTORY)
 
 all_data_df = pd.DataFrame()
 
@@ -60,6 +60,6 @@ for pdf_file in pdf_files:
     all_data_df = pd.concat([all_data_df, df], ignore_index=True)
 
 # Save the combined DataFrame to a CSV file
-combined_csv_file = os.path.join(output_directory, "combined_outstanding_performers.csv")
+combined_csv_file = os.path.join(OUTPUT_DIRECTORY, "combined_outstanding_performers.csv")
 all_data_df.to_csv(combined_csv_file, index=False)
 print(f"Combined CSV file has been saved at: {combined_csv_file}")

@@ -1,10 +1,15 @@
 import os
 import time
 import csv
+import chardet
 from selenium import webdriver
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+
+DOWNLOAD_DICTIONARY = "/Users/mayrapena/PycharmProjects/low_income_effects_on_music/uil_data"
+OUTPUT_DIRECTORY = "csvs/"
+URL = "https://www.texasmusicforms.com/csrrptuilpublic.asp"
 
 
 def download_csv():
@@ -49,7 +54,7 @@ def select_form_options(year, region, event):
 
 def create_combined_csv():
     """Creates the new csv and inserts the header """
-    new_csv_file = os.path.join(DOWNLOAD_DICTIONARY, "uil_data/combined/combined_uil_scores.csv")
+    new_csv_file = os.path.join(OUTPUT_DIRECTORY, "combined_uil_scores.csv")
     with open(new_csv_file, mode='w', newline='') as new_file:
         writer = csv.writer(new_file)
         writer.writerow(['contest_date', 'event', 'region', 'school', 'tea_code', 'city',
@@ -84,10 +89,6 @@ def append_csv_to_new_file(new_csv_file, file_path):
 
             # Append the rest of the rows to the new CSV file
             writer.writerows(reader)
-
-
-DOWNLOAD_DICTIONARY = "/Users/mayrapena/PycharmProjects/low_income_effects_on_music/uil_data"
-URL = "https://www.texasmusicforms.com/csrrptuilpublic.asp"
 
 # Set up the Chrome WebDriver
 options = webdriver.ChromeOptions()
