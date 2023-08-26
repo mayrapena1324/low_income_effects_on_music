@@ -58,47 +58,47 @@ def scrape_honor_data(base_url, num_pages, save_directory, file_name):
 
 # Create a function (base_url, total pages, directory)
 
-orchestra_url = 'https://www.tmea.org/orchestra/honor-orchestra/history/?skip={' \
+ORCHESTRA_URL = 'https://www.tmea.org/orchestra/honor-orchestra/history/?skip={' \
                 '}&Year_Class=*&Director=&School_Name_op=bw' \
                '&School_Name=&ISD_op=bw&ISD=&submit=Search'
 
-band_url = 'https://www.tmea.org/band/honor-band/history/?skip={' \
+BAND_URL = 'https://www.tmea.org/band/honor-band/history/?skip={' \
            '}&Year_Class=*&Director=&School_Name_op=bw&School_Name=&ISD_op=bw&ISD=&submit=Search'
-directory = "honor_data/"
-orchestra_pages = 4
-band_pages = 5
+DIRECTORY = "csvs/"
+ORCHESTRA_PAGES = 4
+BAND_PAGES = 5
 
 # scrape band
 scrape_honor_data(
-    base_url=band_url,
-    num_pages=band_pages,
-    save_directory=directory,
+    base_url=BAND_URL,
+    num_pages=BAND_PAGES,
+    save_directory=DIRECTORY,
     file_name='honor_band')
 
 # scrape orchestra
-scrape_honor_data(base_url=orchestra_url,
-                  num_pages=orchestra_pages,
-                  save_directory=directory,
+scrape_honor_data(base_url=ORCHESTRA_URL,
+                  num_pages=ORCHESTRA_PAGES,
+                  save_directory=DIRECTORY,
                   file_name='honor_orchestra')
 
-#### LOAD TO DUCKDB ####
+# #### LOAD TO DUCKDB ####
 
-create_orch_table = """CREATE OR REPLACE TABLE honor_orchestra_history(year VARCHAR,class VARCHAR,rank VARCHAR, director VARCHAR, school VARCHAR, school_district VARCHAR);
-COPY honor_orchestra_history FROM 'honor_data/honor_orchestra_history.csv' ( DELIMITER ',', HEADER );
-"""
+# create_orch_table = """CREATE OR REPLACE TABLE honor_orchestra_history(year VARCHAR,class VARCHAR,rank VARCHAR, director VARCHAR, school VARCHAR, school_district VARCHAR);
+# COPY honor_orchestra_history FROM 'honor_data/honor_orchestra_history.csv' ( DELIMITER ',', HEADER );
+# """
 
-create_band_table = """CREATE OR REPLACE TABLE honor_band_history(year VARCHAR,class VARCHAR,rank VARCHAR, director VARCHAR, school VARCHAR, school_district VARCHAR);
-COPY honor_band_history FROM 'honor_data/honor_band_history.csv' ( DELIMITER ',', HEADER );
-"""
-testing_table = """SELECT * FROM honor_band_history LIMIT 5;"""
+# create_band_table = """CREATE OR REPLACE TABLE honor_band_history(year VARCHAR,class VARCHAR,rank VARCHAR, director VARCHAR, school VARCHAR, school_district VARCHAR);
+# COPY honor_band_history FROM 'honor_data/honor_band_history.csv' ( DELIMITER ',', HEADER );
+# """
+# testing_table = """SELECT * FROM honor_band_history LIMIT 5;"""
 
 
 
-# Initialize DuckDB connection
-con = duckdb.connect('db.duckdb')  # I should rename this 😅
+# # Initialize DuckDB connection
+# con = duckdb.connect('db.duckdb')  # I should rename this 😅
 
-# Create tables
-con.sql(create_orch_table)
-con.sql(create_band_table)
-#Select eveything from table
-con.sql(testing_table).show()
+# # Create tables
+# con.sql(create_orch_table)
+# con.sql(create_band_table)
+# #Select eveything from table
+# con.sql(testing_table).show()
