@@ -45,6 +45,7 @@ def assert_no_data_loss(directory):
 
 csv_directory = "school_data/"
 output_file = 'combined/combined_data.csv'
+OUTPUT_DIRECTORY = 'csvs/general_school_data.csv'
 
 combined_data = []
 
@@ -73,19 +74,19 @@ header_row = [
 combined_data.insert(0, header_row)
 
 # Save the combined data to a new CSV file
-with open(os.path.join(csv_directory, output_file), 'w', newline='', encoding='utf-8') as file:
+with open(OUTPUT_DIRECTORY, 'w', newline='', encoding='utf-8') as file:
     csv_writer = csv.writer(file)
     csv_writer.writerows(combined_data)
 
 # Use pandas to read the combined CSV file and move the 'school_year' column to the front
-df = pd.read_csv(os.path.join(csv_directory, output_file))
+df = pd.read_csv(OUTPUT_DIRECTORY)
 
 school_year_col = df['school_year']
 df.drop(columns=['school_year'], inplace=True)
 df.insert(0, 'school_year', school_year_col)
 
-df.to_csv(os.path.join(csv_directory, output_file), index=False)
+df.to_csv(OUTPUT_DIRECTORY, index=False)
 
-print(f"Combined data has been saved to {output_file}.")
+print(f"Combined data has been saved to {OUTPUT_DIRECTORY}.")
 
 assert_no_data_loss(csv_directory) 
