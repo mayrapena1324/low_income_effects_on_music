@@ -1,11 +1,53 @@
 
 version: 2
-
+sources:
+  - name: school_data
+    tables:
+      - name: campus_title_data
+        meta:
+          external_location: "read_csv('school_data/combined/combined_title_campus_data.csv, names=['cdn','lea_name','campus_cdn','campus_name','title_i_status','campus_lowincome_percentage','year'
+])"
+          formatter: oldstyle
 models:
-  - name: my_first_dbt_model
+  - name: campus_title_data
     description: "A starter dbt model"
     columns:
-      - name: id
+      - name: cdn
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: lea_name
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: campus_cdn
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: campus_name
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: title_i_status
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: campus_name
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: campus_lowincome_percentage
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: year
         description: "The primary key for this table"
         tests:
           - unique

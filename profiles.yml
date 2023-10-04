@@ -1,13 +1,6 @@
-
-low_income_effects_on_music:
-  target: dev
+low_income_effects_on_music: 
   outputs:
     dev:
       type: duckdb
       path: /Users/mayrapena/PycharmProjects/low_income_effects_on_music/db.duckdb
-      # user: alice
-      # password: <password>
-      # port: 5432
-      # dbname: jaffle_shop
-      # schema: dbt_alice
-      # threads: 4
+  target: dev   

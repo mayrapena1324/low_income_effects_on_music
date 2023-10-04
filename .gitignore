@@ -50,3 +50,4 @@ explore.py
 
 .vscode/
 db.duckdb
+csvs/
